@@ -60,6 +60,7 @@ SpotifyTrack is a Flask web application that allows users to log in with their S
     http://127.0.0.1:5000/
     ```
 
+![Login page](image.png)
 ## Project Structure
 
 ```
