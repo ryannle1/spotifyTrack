@@ -4,29 +4,33 @@ from userStats.api.spotify_client import SpotifyClient
 
 
 
-
+# This module defines the routes for the userStats application.
 main = Blueprint('main', __name__)
 
 spotify = SpotifyClient()
 
+
+# This route renders the login page and provides the Spotify authentication URL.
 @main.route('/')
 def index():
     return render_template("login.html", auth_url=spotify.get_auth_url())
 
 
+
+# This route handles the Spotify OAuth callback.
 @main.route('/callback')
 def callback():
-    code = request.args.get('code')
+    code = request.args.get('code')                     # Get the authorization code from the request arguments
     # print("Callback: code received =", code)
     if not code:
-        return redirect(url_for('main.index'))  # Or return an error message
-    token_info = spotify.get_access_token(code)
+        return redirect(url_for('main.index'))          # Or return an error message
+    token_info = spotify.get_access_token(code)         # Exchange the code for an access token
     # print("Callback token_info:", token_info)
     if not token_info:
-        return redirect(url_for('main.index'))  # Or show an error
+        return redirect(url_for('main.index'))          # Or show an error
     session['token_info'] = token_info
     
-    return redirect(url_for('main.dashboard'))
+    return redirect(url_for('main.dashboard'))          # Redirect to the dashboard after successful authentication
     
 
 
@@ -48,18 +52,18 @@ Returns:
 """
 @main.route('/dashboard')
 def dashboard():
-    token_info = session.get('token_info')
+    token_info = session.get('token_info')                                                  # Retrieve token info from session
     if not token_info:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.index'))                                              # If no token info, redirect to login
     if spotify.sp_oauth.is_token_expired(token_info):
         try:
-            token_info = spotify.sp_oauth.refresh_access_token(token_info['refresh_token'])
+            token_info = spotify.sp_oauth.refresh_access_token(token_info['refresh_token']) # Refresh the token
             session['token_info'] = token_info
         except Exception:
-            return redirect(url_for('main.index'))
+            return redirect(url_for('main.index'))                                          # If refreshing fails, redirect to login
     token = token_info.get('access_token')
     if not token:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.index'))                                              # If no access token, redirect to login
     try:
         top_tracks = spotify.get_user_top_tracks(token)
         top_artists = spotify.get_user_top_artists(token)

@@ -6,11 +6,12 @@ from dotenv import load_dotenv
 
 
 load_dotenv()
+# SpotifyClient class to handle Spotify API interactions
 class SpotifyClient:
     def __init__(self):
-        self.client_id = os.getenv("SPOTIFY_CLIENT_ID")
-        self.client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
-        self.redirect_uri = os.getenv("SPOTFY_REDIRECT_URI")
+        self.client_id = os.getenv("SPOTIFY_CLIENT_ID")                                     # Ensure these environment variables are set
+        self.client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")                             # Ensure these environment variables are set              
+        self.redirect_uri = os.getenv("SPOTFY_REDIRECT_URI")                                # Ensure these environment variables are set
         if not all([self.client_id, self.client_secret, self.redirect_uri]):
             raise ValueError("Missing Spotify API credentials in environment variables.")
         self.scope = "user-read-recently-played user-top-read"
@@ -21,9 +22,11 @@ class SpotifyClient:
             scope=self.scope
         )
 
+    # Returns the Spotify authorization URL for user login.
     def get_auth_url(self):
         return self.sp_oauth.get_authorize_url()
 
+    # Exchanges the authorization code for an access token.
     def get_access_token(self, code):
         try:
             # print("Getting access token with code:", code)
@@ -38,6 +41,7 @@ class SpotifyClient:
             # Optionally log the error
             return Exception(f"Error getting access token: {e}")
 
+    # Returns an authenticated Spotify client using the provided access token.
     def get_spotify_client(self, token):
         """Returns an authenticated spotipy.Spotify object."""
         return spotipy.Spotify(auth=token)
