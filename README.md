@@ -45,7 +45,7 @@ SpotifyTrack is a Flask web application that allows users to log in with their S
     FLASK_SECRET_KEY=your_flask_secret_key
     SPOTIFY_CLIENT_ID=your_spotify_client_id
     SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
-    SPOTIFY_REDIRECT_URI=http://localhost:5000/callback
+    SPOTIFY_REDIRECT_URI=http://127.0.0.1:5000/callback
     ```
 
     Make sure the redirect URI matches the one registered in your Spotify Developer Dashboard.
@@ -57,7 +57,7 @@ SpotifyTrack is a Flask web application that allows users to log in with their S
 
 6. **Open your browser and go to:**
     ```
-    http://localhost:5000/
+    http://127.0.0.1:5000/
     ```
 
 ## Project Structure
