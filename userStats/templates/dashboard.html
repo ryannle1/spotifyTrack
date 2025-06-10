@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="user-profile">
+        <div class="profile-info">
+            {% if user_profile.images and user_profile.images|length > 0 %}
+                <img src="{{ user_profile.images[0].url }}" alt="Avatar" class="avatar">
+            {% endif %}
+            <span class="profile-name">
+                {{ user_profile.display_name }}
+                <a href="{{ user_profile.external_urls.spotify }}" target="_blank" title="View on Spotify">
+                    <svg style="width:18px;vertical-align:middle;" fill="#1db954" viewBox="0 0 24 24">
+                    <path d="M12 0C5.371 0 0 5.371 0 12c0 6.627 5.371 12 12 12s12-5.373 12-12c0-6.629-5.371-12-12-12zm5.287 17.378c-.217.354-.674.461-1.027.242-2.809-1.727-6.357-2.119-10.535-1.169-.406.092-.826-.152-.918-.557-.09-.406.152-.826.557-.918 4.539-1.027 8.398-.592 11.497 1.307.355.219.465.674.242 1.095zm1.464-2.684c-.271.439-.842.58-1.281.309-3.221-1.984-8.143-2.561-11.938-1.406-.498.145-1.021-.139-1.166-.635-.143-.498.139-1.021.635-1.164 4.242-1.271 9.541-.639 13.211 1.525.439.271.58.842.309 1.371zm.129-2.799C15.84 10.266 8.174 10.07 5.396 10.887c-.602.168-1.232-.166-1.402-.771-.17-.602.166-1.23.768-1.4 3.17-.896 11.332-.68 14.694 2.021.494.4.578 1.135.176 1.629-.398.494-1.133.578-1.626.178z"/>
+                    </svg>
+                </a>
+            </span>
+        </div>
+    </div>
+
+    
+    <h3>Your Spotify Stats</h3>
+
+    <section>
+        <h4>Top Tracks</h4>
+        <ul>
+        {% for track in top_tracks %}
+            <li>
+                {{ loop.index }}.
+                {{ track.name }} by
+                {{ track.artists[0].name }}
+                {% if track.album.images %}
+                    <img src="{{ track.album.images[-1].url }}" alt="Album Art" width="32">
+                {% endif %}
+            </li>
+        {% else %}
+            <li>No data available.</li>
+        {% endfor %}
+        </ul>
+    </section>
+
+    <section>
+        <h4>Top Artists</h4>
+        <ul>
+        {% for artist in top_artists %}
+            <li>
+                {{ loop.index }}.
+                {{ artist.name }}
+                {% if artist.images %}
+                    <img src="{{ artist.images[-1].url }}" alt="Artist Image" width="32">
+                {% endif %}
+            </li>
+        {% else %}
+            <li>No data available.</li>
+        {% endfor %}
+        </ul>
+    </section>
+
+    <section>
+        <h4>Recently Played Tracks</h4>
+        <ul>
+        {% for item in recent_tracks %}
+            {% set track = item.track if item.track else item %}
+            <li>
+                {{ loop.index }}.
+                {{ track.name }} by
+                {{ track.artists[0].name }}
+                {% if track.album.images %}
+                    <img src="{{ track.album.images[-1].url }}" alt="Album Art" width="32">
+                {% endif %}
+            </li>
+        {% else %}
+            <li>No data available.</li>
+        {% endfor %}
+        </ul>
+    </section>
+{% endblock %}

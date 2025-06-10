@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+    <h3>Welcome!</h3>
+    <p>Connect with your Spotify account to view your music statistics.</p>
+    <a href="{{ auth_url }}">
+        <button>Login with Spotify</button>
+    </a>
+{% endblock %}
